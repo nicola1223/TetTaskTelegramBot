@@ -4,12 +4,12 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
 from aiogram.filters.command import Command
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from parser import get_bad_feedbacks
+from utils.parser import get_bad_feedbacks
 from dotenv import load_dotenv
 import os
 import json
 
-bd_path = "bd.json"
+bd_path = "files/bd.json"
 parsed_feedbacks = []
 
 logging.basicConfig(level=logging.INFO)
