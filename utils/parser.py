@@ -1,5 +1,5 @@
 import requests
-from excel_parser import get_sku
+from utils.excel_parser import get_sku
 
 
 def get_feedbacks():

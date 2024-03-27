@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 
-filepath = "../files/wildberries.xlsx"
+filepath = "files/wildberries.xlsx"
 
 workbook = load_workbook(filepath)
 
