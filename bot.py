@@ -2,7 +2,7 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
-import aioschedule
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from dotenv import load_dotenv
 import os
 
@@ -15,6 +15,8 @@ load_dotenv(os.path.join(base_dir, '.env'))
 bot = Bot(token=os.environ.get("TOKEN"))
 
 dp = Dispatcher()
+
+scheduler = AsyncIOScheduler()
 
 channel_id = os.environ.get("CHANNEL_ID")
 
@@ -38,26 +40,13 @@ async def send_message_to_channel():
     :return:
     """
     mess = "Сообщение"  # TODO: Добавить текст сообщения для товара
-    await bot.send_message(channel_id)
-
-
-async def scheduler():
-    """
-    Создает расписание для отправки сообщения в канал
-    :return:
-    """
-    aioschedule.every().minutes(5).do(send_message_to_channel)
-    while True:
-        aioschedule.run_pending()
-        await asyncio.sleep(1)
-
-
-async def on_startup():
-    asyncio.create_task(scheduler())
+    await bot.send_message(channel_id, mess)
 
 
 async def main():
-    await dp.start_polling(bot, on_startup=on_startup)
+    scheduler.start()
+    scheduler.add_job(send_message_to_channel, 'interval', hours=1)
+    await dp.start_polling(bot)
 
 
 if __name__ == '__main__':
