@@ -20,8 +20,13 @@ def get_feedbacks():
         yield response.json()["feedbacks"], response.json()["valuation"], imt_name, sku
 
 
-def get_bad_responses():
+def get_bad_feedbacks(parsed_feedbacks):
+    """
+    Function to get bad feedbacks
+    :return: tuple of product name, sku, rating, text and rating
+    """
     for feedbacks, rating, name, sku in get_feedbacks():
         for feedback in feedbacks:
-            if feedback["productValuation"] < 4:
+            if feedback["productValuation"] < 4 and not feedback["id"] in parsed_feedbacks:
+                parsed_feedbacks.append(feedback["id"])
                 yield name, sku, feedback["productValuation"], feedback["text"], rating
